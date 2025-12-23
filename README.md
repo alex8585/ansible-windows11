@@ -44,10 +44,10 @@ programs:
 3. Run the playbook:
 
 ```bash
-ansible-playbook -i inventory.ini install_windows_programs.yml
+ansible-playbook -i hosts.ini install_windows_programs.yml
 ```
 
-Replace `inventory.ini` with your inventory file and `install_windows_programs.yml` with the main playbook file name.
+Replace `hosts.ini` with your inventory file and `install_windows_programs.yml` with the main playbook file name.
 
 ## Tasks Performed
 
