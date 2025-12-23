@@ -1,0 +1,29 @@
+- name: Показать имя программы 
+  debug:
+    msg: "Обрабатывается программа: {{ program.name }}"
+
+- name: Проверяем, установлена ли программа
+  win_stat:
+    path: "{{ program.install_path }}"
+  register: current_program_stat
+
+- name: Скачиваем установщик при необходимости
+  win_get_url:
+    url: "{{ program.url }}"
+    dest: "{{ program.dest_file }}"
+    force: no
+  when: not current_program_stat.stat.exists
+
+- name: Устанавливаем программу если нужно
+  win_package:
+    path: "{{ program.dest_file }}"
+    arguments: "{{ program.args }}"
+    creates_path: "{{ program.install_path }}"
+  when: not current_program_stat.stat.exists
+
+- name: Создаём ярлык
+  win_shortcut:
+    dest: "C:\\Users\\{{ ansible_user }}\\Desktop\\{{ program.name }}.lnk"
+    src: "{{ program.install_path }}"
+    description: "{{ program.name }}"
+
